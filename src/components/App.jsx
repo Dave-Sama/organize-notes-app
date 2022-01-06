@@ -1,39 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Note from './Note';
 import CreateArea from './CreateArea';
+import axios from 'axios';
 
 function App() {
 	const [notes, setNotes] = useState([]);
 
-	function addNote(newNote) {
-		setNotes((prevNotes) => {
-			return [...prevNotes, newNote];
-		});
-	}
-
-	function deleteNote(id) {
-		setNotes((prevNotes) => {
-			return prevNotes.filter((noteItem, index) => {
-				return index !== id;
-			});
-		});
-	}
+	useEffect(async () => {
+		// get data from backend HERE!
+		await axios
+			.get('/notes')
+			.then(({ data }) => {
+				setNotes(() => [...data]);
+			})
+			.catch((err) => console.log(err));
+	}, [notes]);
 
 	return (
 		<div>
 			<Header />
-			<CreateArea onAdd={addNote} />
+			<CreateArea />
 			<div className='flex-container'>
 				{notes.map((noteItem, index) => {
 					return (
 						<Note
 							key={index}
-							id={index}
+							id={noteItem._id}
 							title={noteItem.title}
 							content={noteItem.content}
-							onDelete={deleteNote}
 						/>
 					);
 				})}

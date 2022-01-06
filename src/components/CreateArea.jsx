@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 // import { Collapse } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { Fab, Zoom, Collapse } from '@mui/material';
-function CreateArea(props) {
+import axios from 'axios';
+function CreateArea() {
 	const [note, setNote] = useState({
 		title: '',
 		content: '',
@@ -27,12 +28,17 @@ function CreateArea(props) {
 
 	function submitNote(event) {
 		if (note.title !== '' && note.content !== '') {
-			props.onAdd(note);
 			setNote({
 				title: '',
 				content: '',
 			});
+			// sending data to backend HERE!
+			axios
+				.post('/new-note', note)
+				.then((res) => console.log(res))
+				.catch((err) => console.log(err));
 		}
+
 		event.preventDefault();
 	}
 

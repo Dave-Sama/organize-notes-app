@@ -71,6 +71,7 @@ footer p {
 	height: 36px;
 	cursor: pointer;
 	outline: none;
+	background-color: #eee;
 }
 
 form.create-note {
